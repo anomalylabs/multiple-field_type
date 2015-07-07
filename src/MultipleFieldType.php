@@ -4,6 +4,7 @@ use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class MultipleFieldType
@@ -112,7 +113,12 @@ class MultipleFieldType extends FieldType implements SelfHandling
             return null;
         }
 
-        return $value->select($this->getPivotTableName().'.id')->lists('id');
+        if($value instanceof Relation) {
+            return $value->select($this->getPivotTableName().'.id')->lists('id');
+        } else {
+            return $value->lists('id');
+        }
+
     }
 
     /**
