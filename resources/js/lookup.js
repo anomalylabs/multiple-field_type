@@ -8,6 +8,10 @@ $(function () {
         var wrapper = input.closest('.form-group');
         var modal = $('#' + field + '-modal');
 
+        if (!$('[name="' + field + '"]').length) {
+            return;
+        }
+        
         var selected = $('[name="' + field + '"]').val().split(',');
 
         modal.on('click', '[data-entry]', function (e) {
