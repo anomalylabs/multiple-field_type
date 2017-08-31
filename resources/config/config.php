@@ -32,8 +32,9 @@ return [
         'type'     => 'anomaly.field_type.select',
         'config'   => [
             'options' => [
-                'tags'   => 'anomaly.field_type.multiple::config.mode.option.tags',
-                'lookup' => 'anomaly.field_type.multiple::config.mode.option.lookup',
+                'tags'       => 'anomaly.field_type.multiple::config.mode.option.tags',
+                'lookup'     => 'anomaly.field_type.multiple::config.mode.option.lookup',
+                'checkboxes' => 'anomaly.field_type.multiple::config.mode.option.checkboxes',
             ],
         ],
     ],

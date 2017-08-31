@@ -56,17 +56,40 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
      */
     protected function organizeSyncValue(array $value)
     {
+
+        /**
+         * First clean our value.
+         */
         $value = array_filter(array_unique($value));
 
-        return array_combine(
+        /**
+         * Next take the natural array
+         * key and make it the sort order.
+         */
+        $value = array_combine(
             array_values($value),
             array_map(
                 function ($key) {
-                    return ['sort_order' => $key];
+                    return [
+                        'sort_order' => $key,
+                    ];
                 },
                 array_keys($value)
             )
         );
+
+        /**
+         * Lastly add the file_id
+         * relation column for sync.
+         */
+        array_walk(
+            $value,
+            function (&$value, $key) {
+                $value['related_id'] = $key;
+            }
+        );
+
+        return $value;
     }
 
     /**

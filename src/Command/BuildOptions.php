@@ -38,6 +38,13 @@ class BuildOptions
      */
     public function handle(Container $container)
     {
+        if ($options = $this->fieldType->config('options')) {
+
+            $this->fieldType->setOptions($options);
+
+            return;
+        }
+
         $model   = $this->fieldType->getRelatedModel();
         $handler = $this->fieldType->config('handler', $model->getMultipleFieldTypeOptionsHandler());
 

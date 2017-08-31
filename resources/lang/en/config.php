@@ -8,8 +8,9 @@ return [
     'mode'    => [
         'label'  => 'Input Mode',
         'option' => [
-            'tags'   => 'Tags',
-            'lookup' => 'Lookup',
+            'tags'       => 'Tags',
+            'lookup'     => 'Lookup',
+            'checkboxes' => 'Checkboxes',
         ],
     ],
     'min'     => [

@@ -122,7 +122,7 @@ class MultipleFieldType extends FieldType
             $value = $value->pluck('id')->all();
         }
 
-        return array_filter($value);
+        return array_filter((array)$value);
     }
 
     /**
