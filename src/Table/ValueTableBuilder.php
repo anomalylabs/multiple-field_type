@@ -77,21 +77,20 @@ class ValueTableBuilder extends TableBuilder
         $table   = $fieldType->getPivotTableName();
         $related = $fieldType->getRelatedModel();
         $entry   = $fieldType->getEntry();
-        $keyName = $fieldType->config('key_name', $related->getKeyName());
 
         if ($entry->getId() && $related && !$uploaded) {
             $query->join(
                 $table,
-                $table . '.related_' . $keyName,
+                $table . '.related_' . $fieldType->getRelationKeyName(),
                 '=',
-                $related->getTableName() . '.' . $keyName
+                $related->getTableName() . '.' . $fieldType->getRelationKeyName()
             );
 
             $query->where($table . '.entry_id', $entry->getId());
             $query->orderBy($table . '.sort_order', 'ASC');
         } elseif ($related) {
             $query->whereIn(
-                $related->getTableName() . '.' . $keyName,
+                $related->getTableName() . '.' . $fieldType->getRelationKeyName(),
                 $uploaded ?: [0]
             );
         }
