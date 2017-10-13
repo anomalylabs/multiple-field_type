@@ -24,11 +24,19 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
     {
         $stream = $filter->getStream();
 
+        $keyName = $this->fieldType->config(
+            'key_name',
+            $this->fieldType->getRelatedModel()->getKeyName()
+        );
+
         $query->leftJoin(
             $stream->getEntryTableName() . '_' . $filter->getField() . ' AS filter_' . $filter->getField(),
             $stream->getEntryTableName() . '.id',
             '=',
             'filter_' . $filter->getField() . '.entry_id'
-        )->where('filter_' . $filter->getField() . '.related_id', $filter->getValue());
+        )->where(
+            'filter_' . $filter->getField() . '.related_' . $keyName,
+            $filter->getValue()
+        );
     }
 }
