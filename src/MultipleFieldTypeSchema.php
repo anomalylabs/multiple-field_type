@@ -31,13 +31,24 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
             $table,
             function (Blueprint $table) {
 
+                $model = $this->fieldType->getRelatedModel();
+
+                $keyName = $this->fieldType->config(
+                    'key_name',
+                    $model->getKeyName()
+                );
+
+                $columnType = $model->getAssignment($keyName)
+                    ->getFieldType()
+                    ->getColumnType();
+
                 $table->increments('id');
                 $table->integer('entry_id');
-                $table->integer('related_id');
+                $table->$columnType('related_' . $keyName);
                 $table->integer('sort_order')->nullable();
 
                 $table->unique(
-                    ['entry_id', 'related_id'],
+                    ['entry_id', 'related_' . $keyName],
                     md5($table->getTable() . '_' . $this->fieldType->getField().'-unique-relations')
                 );
             }
