@@ -119,11 +119,8 @@ class MultipleFieldType extends FieldType
     {
         $value = $this->getValue();
 
-        if (is_object($value)) {
-            $value = $value->pluck($this->config(
-                'key_name',
-                $this->getRelatedModel()->getKeyName()
-            ))->all();
+        if ($value instanceof \Illuminate\Support\Collection) {
+            $value = $value->pluck($this->getRelationKeyName())->all();
         }
 
         return array_filter((array)$value);
@@ -209,14 +206,26 @@ class MultipleFieldType extends FieldType
     public function getRelation()
     {
         $entry = $this->getEntry();
-        $model = $this->getRelatedModel();
 
         return $entry->belongsToMany(
             get_class($model),
             $this->getPivotTableName(),
             'entry_id',
-            'related_' . $this->config('key_name', $model->getKeyName())
+            'related_' . $this->getRelationKeyName()
         )->orderBy($this->getPivotTableName() . '.sort_order', 'ASC');
+    }
+
+    /**
+     * Get the relation.
+     *
+     * @return BelongsToMany
+     */
+    public function getRelationKeyName()
+    {
+        return $this->config(
+            'key_name',
+            $this->getRelatedModel()->getKeyName()
+        );
     }
 
     /**
