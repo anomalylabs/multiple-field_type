@@ -44,7 +44,7 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
 
             return;
         }
-        
+
         $this->fieldType->getRelation()->sync($value);
     }
 
@@ -85,7 +85,13 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
         array_walk(
             $value,
             function (&$value, $key) {
-                $value['related_id'] = $key;
+
+                $keyName = $this->fieldType->config(
+                    'key_name',
+                    $this->fieldType->getRelatedModel()->getKeyName()
+                );
+
+                array_set($value, 'related_' . $keyName, $key);
             }
         );
 
