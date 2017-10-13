@@ -57,12 +57,12 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
     protected function organizeSyncValue(array $value)
     {
 
-        /**
+        /*
          * First clean our value.
          */
         $value = array_filter(array_unique($value));
 
-        /**
+        /*
          * Next take the natural array
          * key and make it the sort order.
          */
@@ -78,20 +78,18 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
             )
         );
 
-        /**
+        /*
          * Lastly add the file_id
          * relation column for sync.
          */
         array_walk(
             $value,
             function (&$value, $key) {
-
-                $keyName = $this->fieldType->config(
-                    'key_name',
-                    $this->fieldType->getRelatedModel()->getKeyName()
+                array_set(
+                    $value,
+                    'related_' . $this->fieldType->getRelationKeyName(),
+                    $key
                 );
-
-                array_set($value, 'related_' . $keyName, $key);
             }
         );
 
