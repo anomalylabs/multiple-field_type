@@ -76,9 +76,11 @@ class SelectedTableBuilder extends TableBuilder
          * we can determine saved sort order.
          */
         $related = $fieldType->getRelatedModel();
-        $keyName = $fieldType->config('key_name', $related->getKeyName());
 
-        $query->whereIn($related->getTableName() . '.' . $keyName, $uploaded ?: 0);
+        $query->whereIn(
+            $related->getTableName() . '.' . $fieldType->getRelationKeyName(),
+            $uploaded ?: 0
+        );
     }
 
     /**
