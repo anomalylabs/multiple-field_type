@@ -206,6 +206,7 @@ class MultipleFieldType extends FieldType
     public function getRelation()
     {
         $entry = $this->getEntry();
+        $model = $this->getRelatedModel();
 
         return $entry->belongsToMany(
             get_class($model),
