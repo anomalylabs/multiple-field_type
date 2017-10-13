@@ -185,10 +185,16 @@ class ValueTableBuilder extends TableBuilder
      */
     public function setTableEntries(\Illuminate\Support\Collection $entries)
     {
-        if (!$this->getFieldType()) {
+        if (!$fieldType = $this->getFieldType()) {
             $entries = $entries->sort(
                 function ($a, $b) {
-                    return array_search($a->id, $this->getSelected()) - array_search($b->id, $this->getSelected());
+                    return array_search(
+                        $a->{$this->config('key_name', 'id')},
+                        $this->getSelected()
+                    ) - array_search(
+                        $b->{$this->config('key_name', 'id')},
+                        $this->getSelected()
+                    );
                 }
             );
         }
