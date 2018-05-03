@@ -25,6 +25,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class MultipleFieldType extends FieldType
 {
+
     use DispatchesJobs;
 
     /**
@@ -119,8 +120,8 @@ class MultipleFieldType extends FieldType
     {
         $value = $this->getValue();
 
-        if (is_object($value)) {
-            $value = $value->pluck('id')->all();
+        if ($value instanceof \Illuminate\Support\Collection) {
+            $value = $value->pluck($this->getRelationKeyName())->all();
         }
 
         return array_filter((array)$value);
@@ -212,8 +213,21 @@ class MultipleFieldType extends FieldType
             get_class($model),
             $this->getPivotTableName(),
             'entry_id',
-            'related_id'
+            'related_' . $this->getRelationKeyName()
         )->orderBy($this->getPivotTableName() . '.sort_order', 'ASC');
+    }
+
+    /**
+     * Get the relation.
+     *
+     * @return BelongsToMany
+     */
+    public function getRelationKeyName()
+    {
+        return $this->config(
+            'key_name',
+            $this->getRelatedModel()->getKeyName()
+        );
     }
 
     /**
@@ -319,7 +333,9 @@ class MultipleFieldType extends FieldType
             return $class;
         }
 
-        return $this->config('mode') == 'dropdown' ? 'custom-select form-control' : null;
+        return $this->config('mode') == 'dropdown'
+            ? 'custom-select form-control'
+            : null;
     }
 
     /**

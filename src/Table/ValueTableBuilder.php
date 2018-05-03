@@ -79,11 +79,20 @@ class ValueTableBuilder extends TableBuilder
         $entry   = $fieldType->getEntry();
 
         if ($entry->getId() && $related && !$uploaded) {
-            $query->join($table, $table . '.related_id', '=', $related->getTableName() . '.id');
+            $query->join(
+                $table,
+                $table . '.related_' . $fieldType->getRelationKeyName(),
+                '=',
+                $related->getTableName() . '.' . $fieldType->getRelationKeyName()
+            );
+
             $query->where($table . '.entry_id', $entry->getId());
             $query->orderBy($table . '.sort_order', 'ASC');
         } elseif ($related) {
-            $query->whereIn($related->getTableName() . '.id', $uploaded ?: [0]);
+            $query->whereIn(
+                $related->getTableName() . '.' . $fieldType->getRelationKeyName(),
+                $uploaded ?: [0]
+            );
         }
     }
 
@@ -176,10 +185,16 @@ class ValueTableBuilder extends TableBuilder
      */
     public function setTableEntries(\Illuminate\Support\Collection $entries)
     {
-        if (!$this->getFieldType()) {
+        if (!$fieldType = $this->getFieldType()) {
             $entries = $entries->sort(
                 function ($a, $b) {
-                    return array_search($a->id, $this->getSelected()) - array_search($b->id, $this->getSelected());
+                    return array_search(
+                        $a->{$this->config('key_name', 'id')},
+                        $this->getSelected()
+                    ) - array_search(
+                        $b->{$this->config('key_name', 'id')},
+                        $this->getSelected()
+                    );
                 }
             );
         }

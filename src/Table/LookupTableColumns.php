@@ -1,7 +1,5 @@
 <?php namespace Anomaly\MultipleFieldType\Table;
 
-
-
 /**
  * Class LookupTableColumns
  *
@@ -19,10 +17,11 @@ class LookupTableColumns
      */
     public function handle(LookupTableBuilder $builder)
     {
-        $stream = $builder->getTableStream();
-        $column = $stream->getTitleColumn();
+        $fieldType = $builder->getFieldType();
+        $stream    = $builder->getTableStream();
+        $column    = $stream->getTitleColumn();
 
-        if ($column == 'id') {
+        if ($column == $fieldType->getRelationKeyName()) {
 
             $builder->setColumns([]);
 

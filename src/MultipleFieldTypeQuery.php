@@ -29,6 +29,9 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
             $stream->getEntryTableName() . '.id',
             '=',
             'filter_' . $filter->getField() . '.entry_id'
-        )->where('filter_' . $filter->getField() . '.related_id', $filter->getValue());
+        )->where(
+            'filter_' . $filter->getField() . '.related_' . $this->fieldType->getRelationKeyName(),
+            $filter->getValue()
+        );
     }
 }
