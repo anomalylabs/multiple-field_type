@@ -23,6 +23,10 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
      */
     public function addColumn(Blueprint $table, AssignmentInterface $assignment)
     {
+        if (array_get($this->fieldType->getConfig(), 'mapped', false)) {
+            return;
+        };
+
         $table = $table->getTable() . '_' . $this->fieldType->getField();
 
         $this->schema->dropIfExists($table);
@@ -52,6 +56,10 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
      */
     public function renameColumn(Blueprint $table, FieldType $from)
     {
+        if (array_get($this->fieldType->getConfig(), 'mapped', false)) {
+            return;
+        };
+
         $this->schema->rename(
             $table->getTable() . '_' . $from->getField(),
             $table->getTable() . '_' . $this->fieldType->getField()
@@ -65,6 +73,10 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
      */
     public function dropColumn(Blueprint $table)
     {
+        if (array_get($this->fieldType->getConfig(), 'mapped', false)) {
+            return;
+        };
+
         $this->schema->dropIfExists(
             $table->getTable() . '_' . $this->fieldType->getField()
         );

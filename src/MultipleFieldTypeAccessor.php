@@ -44,7 +44,7 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
 
             return;
         }
-        
+
         $this->fieldType->getRelation()->sync($value);
     }
 
@@ -56,6 +56,7 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
      */
     protected function organizeSyncValue(array $value)
     {
+        $mapped = array_get($this->fieldType->getConfig(), 'mapped', false);
 
         /**
          * First clean our value.
@@ -84,8 +85,8 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
          */
         array_walk(
             $value,
-            function (&$value, $key) {
-                $value['related_id'] = $key;
+            function (&$value, $key) use ($mapped) {
+                $mapped ? $value['entry_id'] = $key : $value['related_id'] = $key;
             }
         );
 

@@ -36,4 +36,11 @@ return [
             'min' => 1,
         ],
     ],
+    'mapped'     => [
+        'required' => true,
+        'type'     => 'anomaly.field_type.boolean',
+        'config'   => [
+            'default_value' => false,
+        ],
+    ],
 ];

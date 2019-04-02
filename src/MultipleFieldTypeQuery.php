@@ -22,13 +22,18 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
      */
     public function filter(Builder $query, FilterInterface $filter)
     {
-        $stream = $filter->getStream();
+        $mapped  = array_get($this->fieldType->getConfig(), 'mapped', false);
+        $stream  = $filter->getStream();
+        $related =  $this->fieldType->getRelatedModel();
+
+        $relation = $stream->getSlug();
+        $table    = $related->{$relation}()->getTable();
 
         $query->leftJoin(
-            $stream->getEntryTableName() . '_' . $filter->getField() . ' AS filter_' . $filter->getField(),
-            $stream->getEntryTableName() . '.id',
+            $table . ' AS filter_' . $filter->getField(),
+            $stream->getEntryTableName()  . '.id',
             '=',
-            'filter_' . $filter->getField() . '.entry_id'
-        )->where('filter_' . $filter->getField() . '.related_id', $filter->getValue());
+            'filter_' . $filter->getField() . ($mapped ? '.related_id' : '.entry_id')
+        )->where('filter_' . $filter->getField() . ($mapped ? '.entry_id' : '.related_id'), $filter->getValue());
     }
 }

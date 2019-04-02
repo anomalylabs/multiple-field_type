@@ -206,11 +206,13 @@ class MultipleFieldType extends FieldType
         $entry = $this->getEntry();
         $model = $this->getRelatedModel();
 
+        $mapped = array_get($this->getConfig(), 'mapped', false);
+
         return $entry->belongsToMany(
             get_class($model),
             $this->getPivotTableName(),
-            'entry_id',
-            'related_id'
+            $mapped ? 'related_id' : 'entry_id',
+            $mapped ? 'entry_id' : 'related_id'
         )->orderBy($this->getPivotTableName() . '.sort_order', 'ASC');
     }
 
@@ -288,6 +290,10 @@ class MultipleFieldType extends FieldType
      */
     public function getPivotTableName()
     {
+        if (array_get($this->getConfig(), 'mapped', false)) {
+            return $this->getRelatedModel()->getTableName() . '_' . $this->entry->getStreamSlug();
+        };
+
         return $this->entry->getTableName() . '_' . $this->getField();
     }
 
