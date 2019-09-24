@@ -1,25 +1,20 @@
 <?php namespace Anomaly\MultipleFieldType\Http\Controller;
 
 use Anomaly\MultipleFieldType\Command\GetConfiguration;
-use Anomaly\MultipleFieldType\Command\HydrateLookupTable;
-use Anomaly\MultipleFieldType\Command\HydrateSelectedTable;
 use Anomaly\MultipleFieldType\MultipleFieldType;
 use Anomaly\MultipleFieldType\Table\LookupTableBuilder;
 use Anomaly\MultipleFieldType\Table\SelectedTableBuilder;
-use Anomaly\MultipleFieldType\Table\ValueTableBuilder;
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
 use Anomaly\Streams\Platform\Http\Controller\AdminController;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Support\Collection;
-use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Contracts\Container\Container;
 
 /**
  * Class LookupController
  *
- * @link          http://pyrocms.com/
- * @author        PyroCMS, Inc. <support@pyrocms.com>
- * @author        Ryan Thompson <ryan@pyrocms.com>
+ * @link   http://pyrocms.com/
+ * @author PyroCMS, Inc. <support@pyrocms.com>
+ * @author Ryan Thompson <ryan@pyrocms.com>
  */
 class LookupController extends AdminController
 {
@@ -27,19 +22,18 @@ class LookupController extends AdminController
     /**
      * Return an index of entries from related stream.
      *
-     * @param  Container                                  $container
-     * @param                                             $key
+     * @param $key
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Container $container, $key)
+    public function index($key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = dispatch_now(new GetConfiguration($key));
 
-        $related = $container->make($config->get('related'));
+        $related = app($config->get('related'));
 
         if ($table = $config->get('lookup_table')) {
-            $table = $container->make($table);
+            $table = app($table);
         } else {
             $table = $related->newMultipleFieldTypeLookupTableBuilder();
         }
@@ -52,19 +46,21 @@ class LookupController extends AdminController
     }
 
     /**
-     * @param Container         $container
+     * Return JSON.
+     *
      * @param MultipleFieldType $fieldType
-     * @param                   $key
+     * @param $key
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function json(Container $container, MultipleFieldType $fieldType, $key)
+    public function json(MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = dispatch_now(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
 
         /* @var EloquentModel $model */
-        $model = $container->make($config->get('related'));
+        $model = app($config->get('related'));
 
         $data = [];
 
@@ -76,36 +72,36 @@ class LookupController extends AdminController
             ];
         }
 
-        return $this->response->json($data);
+        return response()->json($data);
     }
 
     /**
      * Return the selected entries.
      *
      * @param  SelectedTableBuilder $table
-     * @param  MultipleFieldType    $fieldType
+     * @param  MultipleFieldType $fieldType
      * @param                       $key
      * @return null|string
      */
-    public function selected(Container $container, MultipleFieldType $fieldType, $key)
+    public function selected(MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = dispatch_now(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
         $fieldType->setField($config->get('field'));
-        $fieldType->setEntry($this->container->make($config->get('entry')));
+        $fieldType->setEntry(app($config->get('entry')));
 
-        $related = $container->make($config->get('related'));
+        $related = app($config->get('related'));
 
         if ($table = $config->get('selected_table')) {
-            $table = $container->make($table);
+            $table = app($table);
         } else {
-            $table = $related->newMultipleFieldTypeSelectedTableBuilder();
+            $table = $related->call('new_multiple_field_type_selected_table_builder');
         }
 
         /* @var SelectedTableBuilder $table */
-        $table->setSelected(array_filter(explode(',', $this->request->get('uploaded'))))
+        $table->setSelected(array_filter(explode(',', request('uploaded'))))
             ->setModel($config->get('related'))
             ->setFieldType($fieldType)
             ->setConfig($config)
