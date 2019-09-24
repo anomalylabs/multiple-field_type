@@ -3,7 +3,6 @@
 use Anomaly\MultipleFieldType\MultipleFieldType;
 use Illuminate\Container\Container;
 
-
 /**
  * Class BuildOptions
  *
@@ -26,7 +25,7 @@ class BuildOptions
      *
      * @param MultipleFieldType $fieldType
      */
-    function __construct(MultipleFieldType $fieldType)
+    public function __construct(MultipleFieldType $fieldType)
     {
         $this->fieldType = $fieldType;
     }
@@ -39,7 +38,6 @@ class BuildOptions
     public function handle(Container $container)
     {
         if ($options = $this->fieldType->config('options')) {
-
             $this->fieldType->setOptions($options);
 
             return;

@@ -88,41 +88,6 @@ class ValueTableBuilder extends TableBuilder
     }
 
     /**
-     * Return a config value.
-     *
-     * @param        $key
-     * @param  null $default
-     * @return mixed
-     */
-    public function config($key, $default = null)
-    {
-        return $this->config->get($key, $default);
-    }
-
-    /**
-     * Get the config.
-     *
-     * @return Collection|null
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * Set the config.
-     *
-     * @param  Collection $config
-     * @return $this
-     */
-    public function setConfig(Collection $config)
-    {
-        $this->config = $config;
-
-        return $this;
-    }
-
-    /**
      * Get the selected value.
      *
      * @return array
@@ -164,6 +129,41 @@ class ValueTableBuilder extends TableBuilder
     public function setFieldType(MultipleFieldType $fieldType)
     {
         $this->fieldType = $fieldType;
+
+        return $this;
+    }
+
+    /**
+     * Return a config value.
+     *
+     * @param        $key
+     * @param  null $default
+     * @return mixed
+     */
+    public function config($key, $default = null)
+    {
+        return config($key, $default);
+    }
+
+    /**
+     * Get the config.
+     *
+     * @return Collection|null
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Set the config.
+     *
+     * @param  Collection $config
+     * @return $this
+     */
+    public function setConfig(Collection $config)
+    {
+        $this->config = $config;
 
         return $this;
     }

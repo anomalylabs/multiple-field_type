@@ -29,7 +29,7 @@ $(document).on('ajaxComplete ready', function () {
             $(wrapper).find('[data-dismiss="multiple"]').removeClass('hidden');
         });
 
-        modal.on('click', '[name="action"][value="add_selected"]', function(e) {
+        modal.on('click', '[name="action"][value="add_selected"]', function (e) {
 
             e.preventDefault();
 
@@ -42,7 +42,7 @@ $(document).on('ajaxComplete ready', function () {
 
             wrapper.find('.selected').load(
                 REQUEST_ROOT_PATH + '/streams/multiple-field_type/selected/' + $(this).data('key') + '?uploaded=' + selected.join(','),
-                function() {
+                function () {
                     wrapper.sort();
                 }
             );

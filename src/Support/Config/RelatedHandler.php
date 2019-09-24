@@ -26,7 +26,6 @@ class RelatedHandler
 
         /* @var StreamInterface as $stream */
         foreach ($streams->visible() as $stream) {
-
             $addon = ucwords(str_replace('_', ' ', $stream->getNamespace()));
 
             $model = $stream->getEntryModelName();

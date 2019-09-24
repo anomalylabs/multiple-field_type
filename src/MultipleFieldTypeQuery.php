@@ -17,7 +17,7 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
     /**
      * Handle the filter query.
      *
-     * @param Builder         $query
+     * @param Builder $query
      * @param FilterInterface $filter
      */
     public function filter(Builder $query, FilterInterface $filter)

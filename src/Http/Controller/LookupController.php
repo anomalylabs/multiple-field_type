@@ -30,9 +30,9 @@ class LookupController extends AdminController
         /* @var Collection $config */
         $config = dispatch_now(new GetConfiguration($key));
 
-        $related = app($config->get('related'));
+        $related = app(config('related'));
 
-        if ($table = $config->get('lookup_table')) {
+        if ($table = config('lookup_table')) {
             $table = app($table);
         } else {
             $table = $related->newMultipleFieldTypeLookupTableBuilder();
@@ -60,7 +60,7 @@ class LookupController extends AdminController
         $fieldType->mergeConfig($config->all());
 
         /* @var EloquentModel $model */
-        $model = app($config->get('related'));
+        $model = app(config('related'));
 
         $data = [];
 
@@ -89,12 +89,12 @@ class LookupController extends AdminController
         $config = dispatch_now(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
-        $fieldType->setField($config->get('field'));
-        $fieldType->setEntry(app($config->get('entry')));
+        $fieldType->setField(config('field'));
+        $fieldType->setEntry(app(config('entry')));
 
-        $related = app($config->get('related'));
+        $related = app(config('related'));
 
-        if ($table = $config->get('selected_table')) {
+        if ($table = config('selected_table')) {
             $table = app($table);
         } else {
             $table = $related->call('new_multiple_field_type_selected_table_builder');
@@ -102,7 +102,7 @@ class LookupController extends AdminController
 
         /* @var SelectedTableBuilder $table */
         $table->setSelected(array_filter(explode(',', request('uploaded'))))
-            ->setModel($config->get('related'))
+            ->setModel(config('related'))
             ->setFieldType($fieldType)
             ->setConfig($config)
             ->build()

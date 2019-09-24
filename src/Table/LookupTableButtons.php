@@ -1,7 +1,5 @@
 <?php namespace Anomaly\MultipleFieldType\Table;
 
-
-
 /**
  * Class LookupTableButtons
  *

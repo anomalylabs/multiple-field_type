@@ -7,12 +7,12 @@ use Anomaly\Streams\Platform\Entry\EntryCollection;
 use Anomaly\Streams\Platform\Model\EloquentCollection;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Stream\Command\GetStream;
+use Anomaly\Streams\Platform\Stream\Contract\StreamInterface;
 use Anomaly\Streams\Platform\Support\Collection;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
  * Class MultipleFieldType
@@ -23,8 +23,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
  */
 class MultipleFieldType extends FieldType
 {
-
-    use DispatchesJobs;
 
     /**
      * No database column.
@@ -118,8 +116,10 @@ class MultipleFieldType extends FieldType
     {
         $value = $this->getValue();
 
-        if (is_object($value)) {
-            $value = $value->pluck('id')->all();
+        if ($value instanceof \Illuminate\Support\Collection) {
+            $value = $value
+                ->pluck('id')
+                ->all();
         }
 
         return array_filter((array)$value);
@@ -178,9 +178,9 @@ class MultipleFieldType extends FieldType
         $related = $this->getRelatedModel();
 
         if ($table = $this->config('value_table')) {
-            $table = $this->container->make($table);
+            $table = app($table);
         } else {
-            $table = $related->newMultipleFieldTypeValueTableBuilder();
+            $table = $related->call('new_multiple_field_type_value_table_builder');
         }
 
         /* @var ValueTableBuilder $table */
@@ -203,6 +203,26 @@ class MultipleFieldType extends FieldType
     }
 
     /**
+     * Get the related model.
+     *
+     * @return EloquentModel
+     */
+    public function getRelatedModel()
+    {
+        $model = $this->config('related');
+
+        if (strpos($model, '.')) {
+
+            /* @var StreamInterface $stream */
+            $stream = dispatch_now(new GetStream($model));
+
+            return $stream->getEntryModel();
+        }
+
+        return app($model);
+    }
+
+    /**
      * Get the relation.
      *
      * @return BelongsToMany
@@ -221,6 +241,16 @@ class MultipleFieldType extends FieldType
     }
 
     /**
+     * Get the pivot table.
+     *
+     * @return string
+     */
+    public function getPivotTableName()
+    {
+        return $this->entry->getTableName() . '_' . $this->getField();
+    }
+
+    /**
      * Get the options.
      *
      * @return array
@@ -228,7 +258,7 @@ class MultipleFieldType extends FieldType
     public function getOptions()
     {
         if ($this->options === null) {
-            $this->dispatch(new BuildOptions($this));
+            dispatch_now(new BuildOptions($this));
         }
 
         return $this->options;
@@ -268,51 +298,6 @@ class MultipleFieldType extends FieldType
     }
 
     /**
-     * Get the related model.
-     *
-     * @return EloquentModel
-     */
-    public function getRelatedModel()
-    {
-        $model = $this->config('related');
-
-        if (strpos($model, '.')) {
-
-            /* @var StreamInterface $stream */
-            $stream = $this->dispatch(new GetStream($model));
-
-            return $stream->getEntryModel();
-        }
-
-        return $this->container->make($model);
-    }
-
-    /**
-     * Get the pivot table.
-     *
-     * @return string
-     */
-    public function getPivotTableName()
-    {
-        return $this->entry->getTableName() . '_' . $this->getField();
-    }
-
-    /**
-     * Get the post value.
-     *
-     * @param  null $default
-     * @return array
-     */
-    public function getPostValue($default = null)
-    {
-        if (is_array($value = parent::getPostValue($default))) {
-            return array_filter($value);
-        }
-
-        return array_filter(explode(',', $value));
-    }
-
-    /**
      * Get the class.
      *
      * @return null|string
@@ -337,6 +322,21 @@ class MultipleFieldType extends FieldType
 
         // See the accessor for how IDs are handled.
         $entry->{$this->getField()} = $this->getPostValue();
+    }
+
+    /**
+     * Get the post value.
+     *
+     * @param  null $default
+     * @return array
+     */
+    public function getPostValue($default = null)
+    {
+        if (is_array($value = parent::getPostValue($default))) {
+            return array_filter($value);
+        }
+
+        return array_filter(explode(',', $value));
     }
 
     /**

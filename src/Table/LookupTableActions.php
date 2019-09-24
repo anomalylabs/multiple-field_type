@@ -1,6 +1,5 @@
 <?php namespace Anomaly\MultipleFieldType\Table;
 
-
 /**
  * Class LookupTableActions
  *

@@ -69,12 +69,12 @@ class LookupTableBuilder extends TableBuilder
      * Return a config value.
      *
      * @param        $key
-     * @param  null  $default
+     * @param  null $default
      * @return mixed
      */
     public function config($key, $default = null)
     {
-        return $this->config->get($key, $default);
+        return config($key, $default);
     }
 
     /**

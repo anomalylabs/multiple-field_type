@@ -44,7 +44,7 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
 
             return;
         }
-        
+
         $this->fieldType->getRelation()->sync($value);
     }
 

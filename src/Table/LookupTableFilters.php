@@ -1,7 +1,5 @@
 <?php namespace Anomaly\MultipleFieldType\Table;
 
-
-
 /**
  * Class LookupTableFilters
  *
@@ -23,7 +21,6 @@ class LookupTableFilters
         $filter = $stream->getTitleColumn();
 
         if ($filter == 'id') {
-
             $builder->setFilters([]);
 
             return;

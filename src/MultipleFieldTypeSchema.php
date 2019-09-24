@@ -18,7 +18,7 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
     /**
      * Add the field type's pivot table.
      *
-     * @param Blueprint           $table
+     * @param Blueprint $table
      * @param AssignmentInterface $assignment
      */
     public function addColumn(Blueprint $table, AssignmentInterface $assignment)
@@ -30,7 +30,6 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
         $this->schema->create(
             $table,
             function (Blueprint $table) {
-
                 $table->increments('id');
                 $table->integer('entry_id');
                 $table->integer('related_id');
@@ -38,7 +37,7 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
 
                 $table->unique(
                     ['entry_id', 'related_id'],
-                    md5($table->getTable() . '_' . $this->fieldType->getField().'-unique-relations')
+                    md5($table->getTable() . '_' . $this->fieldType->getField() . '-unique-relations')
                 );
             }
         );
@@ -69,5 +68,4 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
             $table->getTable() . '_' . $this->fieldType->getField()
         );
     }
-
 }
