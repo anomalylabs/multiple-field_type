@@ -9,8 +9,7 @@
     ],
     "homepage": "http://pyrocms.com/anomaly/multiple-field_type",
     "license": "MIT",
-    "authors": [
-        {
+    "authors": [{
             "name": "PyroCMS, Inc.",
             "homepage": "http://pyrocms.com/",
             "role": "Owner"
@@ -34,6 +33,13 @@
     "autoload": {
         "psr-4": {
             "Anomaly\\MultipleFieldType\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Anomaly\\MultipleFieldType\\MultipleFieldTypeServiceProvider"
+            ]
         }
     }
 }
