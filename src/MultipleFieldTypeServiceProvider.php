@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType;
+<?php
+
+namespace Anomaly\MultipleFieldType;
 
 use Anomaly\MultipleFieldType\Handler\Related;
 use Anomaly\MultipleFieldType\Table\LookupTableBuilder;
@@ -7,44 +9,47 @@ use Anomaly\MultipleFieldType\Table\ValueTableBuilder;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
 use Anomaly\Streams\Platform\Entry\EntryModel;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * Class MultipleFieldTypeServiceProvider
  *
  * @link   http://pyrocms.com/
- * @author PyroCMS, Inc. <support@pyrocms.com>
  * @author Ryan Thompson <ryan@pyrocms.com>
  */
-class MultipleFieldTypeServiceProvider extends AddonServiceProvider
+class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements DeferrableProvider
 {
-
-    /**
-     * The singleton bindings.
-     *
-     * @var array
-     */
-    protected $singletons = [
-        MultipleFieldTypeAccessor::class => MultipleFieldTypeAccessor::class,
-    ];
 
     /**
      * The addon routes.
      *
      * @var array
      */
-    protected $routes = [
+    public $routes = [
         'streams/multiple-field_type/json/{key}'     => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@json',
         'streams/multiple-field_type/index/{key}'    => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@index',
         'streams/multiple-field_type/selected/{key}' => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@selected',
     ];
 
     /**
+     * Return the provided services.
+     */
+    public function provides()
+    {
+        return [MultipleFieldType::class];
+    }
+
+    /**
      * Register the addon.
      *
      * @param EntryModel $model
      */
-    public function register(EntryModel $model)
+    public function register()
     {
+        parent::register();
+
+        $model = app(EntryModel::class);
+
         $model->bind(
             'new_multiple_field_type_lookup_table_builder',
             function () {
