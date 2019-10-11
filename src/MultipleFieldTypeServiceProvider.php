@@ -36,7 +36,7 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
      */
     public function provides()
     {
-        return [MultipleFieldType::class];
+        return [MultipleFieldType::class, 'anomaly.field_type.multiple'];
     }
 
     /**
