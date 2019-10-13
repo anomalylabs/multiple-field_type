@@ -1,4 +1,4 @@
-<select
+{{-- <select
         class="custom-select form-control"
         name="{{ field_type.input_name }}">
 
@@ -8,4 +8,4 @@
         <option value="{{ value }}" {{ value == field_type.value ? 'selected' }}>{{ trans(option) }}</option>
     {% endfor %}
 
-</select>
+</select> --}}
