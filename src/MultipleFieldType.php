@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType;
+<?php
+
+namespace Anomaly\MultipleFieldType;
 
 use Anomaly\MultipleFieldType\Command\BuildOptions;
 use Anomaly\MultipleFieldType\Table\ValueTableBuilder;
@@ -37,13 +39,6 @@ class MultipleFieldType extends FieldType
      * @var string
      */
     protected $inputView = null;
-
-    /**
-     * The filter view.
-     *
-     * @var string
-     */
-    protected $filterView = 'anomaly.field_type.multiple::filter';
 
     /**
      * The pre-defined handlers.
@@ -122,7 +117,7 @@ class MultipleFieldType extends FieldType
                 ->all();
         }
 
-        return array_filter((array)$value);
+        return array_filter((array) $value);
     }
 
     /**
@@ -189,7 +184,7 @@ class MultipleFieldType extends FieldType
             ->setModel($related);
 
         if (!$value instanceof EntryCollection) {
-            $table->setSelected((array)$value);
+            $table->setSelected((array) $value);
         }
 
         if ($value instanceof EntryCollection) {
