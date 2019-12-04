@@ -335,6 +335,27 @@ class MultipleFieldType extends FieldType
     }
 
     /**
+     * Get the attributes.
+     *
+     * @param array $attributes
+     * @return array
+     */
+    public function attributes(array $attributes = [])
+    {
+        return array_filter(
+            array_merge(
+                parent::attributes(),
+                [
+                    'data-key' => $this->key(),
+                    'name' => $this->getInputName() . '[]',
+                    'data-placeholder' => $this->getPlaceholder(),
+                ],
+                $attributes
+            )
+        );
+    }
+
+    /**
      * Fired just before version comparison.
      *
      * @param EloquentCollection $related
