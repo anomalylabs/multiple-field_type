@@ -1,4 +1,4 @@
-<select {!! html_attributes($fieldType->attributes()) !!}>
+<select {!! html_attributes($fieldType->attributes(['value' => null])) !!}>
 
     <option value="" disabled {{ $fieldType->getValue() ? null : 'selected' }}>{{ $fieldType->getPlaceholder() }}</option>
 
