@@ -1,7 +1,8 @@
-<?php namespace Anomaly\MultipleFieldType\Handler;
+<?php
+
+namespace Anomaly\MultipleFieldType\Handler;
 
 use Anomaly\MultipleFieldType\MultipleFieldType;
-use Anomaly\Streams\Platform\Support\Value;
 
 /**
  * Class Related
@@ -17,34 +18,22 @@ class Related
      * Handle the options.
      *
      * @param  MultipleFieldType $fieldType
-     * @param Value $value
-     * @return array
      */
-    public function handle(MultipleFieldType $fieldType, Value $value)
+    public function handle(MultipleFieldType $fieldType)
     {
         $model = $fieldType->getRelatedModel();
 
         $query   = $model->newQuery();
         $results = $query->get();
 
+        $parsable = str_contains($fieldType->config('title_name', $model->getTitleName()), ['{', '::']);
+
         try {
 
             /**
              * Try and use a non-parsing pattern.
              */
-            if (strpos($fieldType->config('title_name', $model->getTitleName()), '{') === false) {
-                $fieldType->setOptions(
-                    $results->pluck(
-                        $fieldType->config('title_name', $model->getTitleName()),
-                        $fieldType->config('key_name', $model->getKeyName())
-                    )->all()
-                );
-            }
-
-            /**
-             * Try and use a parsing pattern.
-             */
-            if (strpos($fieldType->config('title_name', $model->getTitleName()), '{') !== false) {
+            if (!$parsable) {
                 $fieldType->setOptions(
                     array_combine(
                         $results->map(
@@ -53,8 +42,28 @@ class Related
                             }
                         )->all(),
                         $results->map(
-                            function ($item) use ($fieldType, $model, $value) {
-                                return $value->make($fieldType->config('title_name', $model->getTitleName()), $item);
+                            function ($item) use ($fieldType, $model) {
+                                return valuate($fieldType->config('title_name', $model->getTitleName()), $item);
+                            }
+                        )->all()
+                    )
+                );
+            }
+
+            /**
+             * Try and use a parsing pattern.
+             */
+            if ($parsable) {
+                $fieldType->setOptions(
+                    array_combine(
+                        $results->map(
+                            function ($item) use ($fieldType, $model) {
+                                return data_get($item, $fieldType->config('key_name', $model->getKeyName()));
+                            }
+                        )->all(),
+                        $results->map(
+                            function ($item) use ($fieldType, $model) {
+                                return valuate($fieldType->config('title_name', $model->getTitleName()), $item);
                             }
                         )->all()
                     )
