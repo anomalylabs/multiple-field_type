@@ -41,6 +41,13 @@ class MultipleFieldType extends FieldType
     protected $inputView = null;
 
     /**
+     * The filter view.
+     *
+     * @var string
+     */
+    protected $filterView = 'anomaly.field_type.multiple::filter';
+
+    /**
      * The pre-defined handlers.
      *
      * @var array
