@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType;
+<?php
+
+namespace Anomaly\MultipleFieldType;
 
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeQuery;
 use Anomaly\Streams\Platform\Ui\Table\Component\Filter\Contract\FilterInterface;
@@ -22,6 +24,7 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
      */
     public function filter(Builder $query, FilterInterface $filter)
     {
+
         $stream = $filter->getStream();
 
         $query->leftJoin(
