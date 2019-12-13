@@ -12,6 +12,7 @@ use Anomaly\Streams\Platform\Stream\Command\GetStream;
 use Anomaly\Streams\Platform\Stream\Contract\StreamInterface;
 use Anomaly\Streams\Platform\Support\Collection;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -211,7 +212,9 @@ class MultipleFieldType extends FieldType
      */
     public function getRelatedModel()
     {
-        $model = $this->config('related');
+        if (!$model = $this->config('related')) {
+            throw new Exception('Config [related] is required.');
+        }
 
         if (strpos($model, '.')) {
 
