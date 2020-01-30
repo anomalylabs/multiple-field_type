@@ -55,7 +55,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
+                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
+                $builder = '\\Support\\MultipleFieldType\\LookupTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
@@ -70,7 +71,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
+                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
+                $builder = '\\Support\\MultipleFieldType\\ValueTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
@@ -85,7 +87,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
+                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
+                $builder = '\\Support\\MultipleFieldType\\SelectedTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
@@ -100,7 +103,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $handler = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\OptionsHandler';
+                //$handler = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\OptionsHandler';
+                $handler = '\\Support\\MultipleFieldType\\OptionsHandler';
 
                 if (class_exists($handler)) {
                     return $handler;
