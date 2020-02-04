@@ -55,7 +55,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
+                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
+                $builder = '\\Support\\MultipleFieldType\\LookupTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
@@ -70,7 +71,8 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
+                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
+                $builder = '\\Support\\MultipleFieldType\\ValueTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
