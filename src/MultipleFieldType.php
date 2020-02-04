@@ -33,6 +33,13 @@ class MultipleFieldType extends FieldType
     protected $columnType = false;
 
     /**
+     * The field type schema.
+     *
+     * @var string
+     */
+    protected $schema = MultipleFieldTypeSchema::class;
+
+    /**
      * The input view.
      *
      * @var string

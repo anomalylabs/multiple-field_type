@@ -85,7 +85,7 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
+                $builder = get_class($this) . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
 
                 if (class_exists($builder)) {
                     return app($builder);
@@ -100,7 +100,7 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
             function () {
 
                 /* @var EntryInterface $this */
-                $handler = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\OptionsHandler';
+                $handler = get_class($this) . '\\Support\\MultipleFieldType\\OptionsHandler';
 
                 if (class_exists($handler)) {
                     return $handler;
