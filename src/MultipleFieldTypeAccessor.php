@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType;
+<?php
+
+namespace Anomaly\MultipleFieldType;
 
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeAccessor;
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
@@ -36,7 +38,7 @@ class MultipleFieldTypeAccessor extends FieldTypeAccessor
         } elseif ($value instanceof Collection) {
             $value = $this->organizeSyncValue($value->filter()->all());
         } elseif ($value instanceof EntryInterface) {
-            $value = $this->organizeSyncValue([$value->getId()]);
+            $value = $this->organizeSyncValue([$value->getKey()]);
         }
 
         if (!$value) {

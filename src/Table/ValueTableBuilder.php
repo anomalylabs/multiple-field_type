@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType\Table;
+<?php
+
+namespace Anomaly\MultipleFieldType\Table;
 
 use Anomaly\MultipleFieldType\MultipleFieldType;
 use Anomaly\Streams\Platform\Support\Collection;
@@ -78,9 +80,9 @@ class ValueTableBuilder extends TableBuilder
         $related = $fieldType->getRelatedModel();
         $entry   = $fieldType->getEntry();
 
-        if ($entry->getId() && $related && !$uploaded) {
+        if ($entry->getKey() && $related && !$uploaded) {
             $query->join($table, $table . '.related_id', '=', $related->getTableName() . '.id');
-            $query->where($table . '.entry_id', $entry->getId());
+            $query->where($table . '.entry_id', $entry->getKey());
             $query->orderBy($table . '.sort_order', 'ASC');
         } elseif ($related) {
             $query->whereIn($related->getTableName() . '.id', $uploaded ?: [0]);

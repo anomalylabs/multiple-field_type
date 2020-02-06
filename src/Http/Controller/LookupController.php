@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType\Http\Controller;
+<?php
+
+namespace Anomaly\MultipleFieldType\Http\Controller;
 
 use Anomaly\MultipleFieldType\Command\GetConfiguration;
 use Anomaly\MultipleFieldType\MultipleFieldType;
@@ -66,8 +68,8 @@ class LookupController extends AdminController
 
         /* @var EntryInterface $item */
         foreach ($model->all() as $item) {
-            $data[] = (object)[
-                'id'   => $item->getId(),
+            $data[] = (object) [
+                'id'   => $item->getKey(),
                 'text' => $item->getTitle(),
             ];
         }
