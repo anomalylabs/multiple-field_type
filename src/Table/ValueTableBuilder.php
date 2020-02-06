@@ -81,11 +81,11 @@ class ValueTableBuilder extends TableBuilder
         $entry   = $fieldType->getEntry();
 
         if ($entry->getKey() && $related && !$uploaded) {
-            $query->join($table, $table . '.related_id', '=', $related->getTableName() . '.id');
+            $query->join($table, $table . '.related_id', '=', $related->getTable() . '.id');
             $query->where($table . '.entry_id', $entry->getKey());
             $query->orderBy($table . '.sort_order', 'ASC');
         } elseif ($related) {
-            $query->whereIn($related->getTableName() . '.id', $uploaded ?: [0]);
+            $query->whereIn($related->getTable() . '.id', $uploaded ?: [0]);
         }
     }
 

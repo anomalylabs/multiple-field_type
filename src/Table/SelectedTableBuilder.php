@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType\Table;
+<?php
+
+namespace Anomaly\MultipleFieldType\Table;
 
 use Anomaly\MultipleFieldType\MultipleFieldType;
 use Anomaly\Streams\Platform\Support\Collection;
@@ -76,7 +78,7 @@ class SelectedTableBuilder extends TableBuilder
          */
         $related = $fieldType->getRelatedModel();
 
-        $query->whereIn($related->getTableName() . '.id', $uploaded ?: 0);
+        $query->whereIn($related->getTable() . '.id', $uploaded ?: 0);
     }
 
     /**

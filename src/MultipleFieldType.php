@@ -257,7 +257,7 @@ class MultipleFieldType extends FieldType
      */
     public function getPivotTableName()
     {
-        return $this->entry->getTableName() . '_' . $this->getField();
+        return $this->entry->getTable() . '_' . $this->getField();
     }
 
     /**
