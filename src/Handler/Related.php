@@ -26,7 +26,7 @@ class Related
         $query   = $model->newQuery();
         $results = $query->get();
 
-        $parsable = str_contains($fieldType->config('title_name', $model->getTitleName()), ['{', '::']);
+        $parsable = str_contains($fieldType->config('title_name', $model->stream()->getTitleColumn()), ['{', '::']);
 
         try {
 
@@ -43,7 +43,7 @@ class Related
                         )->all(),
                         $results->map(
                             function ($item) use ($fieldType, $model) {
-                                return valuate($fieldType->config('title_name', $model->getTitleName()), $item);
+                                return valuate($fieldType->config('title_name', $model->stream()->getTitleColumn()), $item);
                             }
                         )->all()
                     )
@@ -63,7 +63,7 @@ class Related
                         )->all(),
                         $results->map(
                             function ($item) use ($fieldType, $model) {
-                                return valuate($fieldType->config('title_name', $model->getTitleName()), $item);
+                                return valuate($fieldType->config('title_name', $model->stream()->getTitleColumn()), $item);
                             }
                         )->all()
                     )
