@@ -5,7 +5,6 @@ namespace Anomaly\MultipleFieldType;
 use Anomaly\MultipleFieldType\Command\BuildOptions;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Entry\EntryCollection;
-use Anomaly\Streams\Platform\Model\EloquentCollection;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Stream\Command\GetStream;
 use Anomaly\Streams\Platform\Support\Collection;
@@ -373,9 +372,9 @@ class MultipleFieldType extends FieldType
     /**
      * Fired just before version comparison.
      *
-     * @param EloquentCollection $related
+     * @param Collection $related
      */
-    public function toArrayForComparison(EloquentCollection $related)
+    public function toArrayForComparison(Collection $related)
     {
         return $related->map(
             function (EloquentModel $model) {
