@@ -1,5 +1,6 @@
 <?php namespace Anomaly\MultipleFieldType\Command;
 
+use Anomaly\MultipleFieldType\Handler\Related;
 use Anomaly\MultipleFieldType\MultipleFieldType;
 use Illuminate\Container\Container;
 
@@ -44,7 +45,8 @@ class BuildOptions
         }
 
         $model   = $this->fieldType->getRelatedModel();
-        $handler = $this->fieldType->config('handler', $model->getMultipleFieldTypeOptionsHandler());
+        //$handler = $this->fieldType->config('handler', $model->call('get_multiple_field_type_options_handler'));
+        $handler = Related::class;
 
         if (!class_exists($handler) && !str_contains($handler, '@')) {
             $handler = array_get($this->fieldType->getHandlers(), $handler);

@@ -9,6 +9,7 @@ use Anomaly\MultipleFieldType\Table\ValueTableBuilder;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
 use Anomaly\Streams\Platform\Entry\EntryModel;
+use Anomaly\Streams\Platform\Model\Traits\Streams;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
@@ -48,68 +49,68 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider implements D
     {
         parent::register();
 
-        $model = app(EntryModel::class);
+        // $model = app(Streams::class);
 
-        $model->bind(
-            'new_multiple_field_type_lookup_table_builder',
-            function () {
+        // $model->bind(
+        //     'new_multiple_field_type_lookup_table_builder',
+        //     function () {
 
-                /* @var EntryInterface $this */
-                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
-                $builder = '\\Support\\MultipleFieldType\\LookupTableBuilder';
+        //         /* @var EntryInterface $this */
+        //         //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\LookupTableBuilder';
+        //         $builder = '\\Support\\MultipleFieldType\\LookupTableBuilder';
 
-                if (class_exists($builder)) {
-                    return app($builder);
-                }
+        //         if (class_exists($builder)) {
+        //             return app($builder);
+        //         }
 
-                return app(LookupTableBuilder::class);
-            }
-        );
+        //         return app(LookupTableBuilder::class);
+        //     }
+        // );
 
-        $model->bind(
-            'new_multiple_field_type_value_table_builder',
-            function () {
+        // $model->bind(
+        //     'new_multiple_field_type_value_table_builder',
+        //     function () {
 
-                /* @var EntryInterface $this */
-                //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
-                $builder = '\\Support\\MultipleFieldType\\ValueTableBuilder';
+        //         /* @var EntryInterface $this */
+        //         //$builder = $this->getBoundModelNamespace() . '\\Support\\MultipleFieldType\\ValueTableBuilder';
+        //         $builder = '\\Support\\MultipleFieldType\\ValueTableBuilder';
 
-                if (class_exists($builder)) {
-                    return app($builder);
-                }
+        //         if (class_exists($builder)) {
+        //             return app($builder);
+        //         }
 
-                return app(ValueTableBuilder::class);
-            }
-        );
+        //         return app(ValueTableBuilder::class);
+        //     }
+        // );
 
-        $model->bind(
-            'new_multiple_field_type_selected_table_builder',
-            function () {
+        // $model->bind(
+        //     'new_multiple_field_type_selected_table_builder',
+        //     function () {
 
-                /* @var EntryInterface $this */
-                $builder = get_class($this) . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
+        //         /* @var EntryInterface $this */
+        //         $builder = get_class($this) . '\\Support\\MultipleFieldType\\SelectedTableBuilder';
 
-                if (class_exists($builder)) {
-                    return app($builder);
-                }
+        //         if (class_exists($builder)) {
+        //             return app($builder);
+        //         }
 
-                return app(SelectedTableBuilder::class);
-            }
-        );
+        //         return app(SelectedTableBuilder::class);
+        //     }
+        // );
 
-        $model->bind(
-            'get_multiple_field_type_options_handler',
-            function () {
+        // $model->bind(
+        //     'get_multiple_field_type_options_handler',
+        //     function () {
 
-                /* @var EntryInterface $this */
-                $handler = get_class($this) . '\\Support\\MultipleFieldType\\OptionsHandler';
+        //         /* @var EntryInterface $this */
+        //         $handler = get_class($this) . '\\Support\\MultipleFieldType\\OptionsHandler';
 
-                if (class_exists($handler)) {
-                    return $handler;
-                }
+        //         if (class_exists($handler)) {
+        //             return $handler;
+        //         }
 
-                return Related::class;
-            }
-        );
+        //         return Related::class;
+        //     }
+        // );
     }
 }
