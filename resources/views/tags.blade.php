@@ -1,7 +1,7 @@
-{{ assets("styles.css", "anomaly.field_type.multiple::css/choices.css", ["as:jshjohnson/Choices.css"]) }}
+{{-- {{ assets("styles.css", "anomaly.field_type.multiple::css/choices.css", ["as:jshjohnson/Choices.css"]) }}
 {{ assets("scripts.js", "anomaly.field_type.multiple::js/choices.js", ["as:jshjohnson/Choices.js"]) }}
 {{ assets("styles.css", "anomaly.field_type.multiple::css/tags.css") }}
-{{ assets("scripts.js", "anomaly.field_type.multiple::js/tags.js") }}
+{{ assets("scripts.js", "anomaly.field_type.multiple::js/tags.js") }} --}}
 
 <select multiple {!! html_attributes($fieldType->attributes(['value' => null])) !!}>
 
