@@ -3,7 +3,7 @@
 namespace Anomaly\MultipleFieldType\Table;
 
 use Anomaly\MultipleFieldType\MultipleFieldType;
-use Anomaly\Streams\Platform\Support\Collection;
+use Illuminate\Support\Collection;
 use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
 use Illuminate\Database\Eloquent\Builder;
 

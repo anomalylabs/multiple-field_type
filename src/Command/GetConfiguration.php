@@ -1,6 +1,6 @@
 <?php namespace Anomaly\MultipleFieldType\Command;
 
-use Anomaly\Streams\Platform\Support\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\Cache\Repository;
 
 /**

@@ -7,7 +7,7 @@ use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Entry\EntryCollection;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Stream\Command\GetStream;
-use Anomaly\Streams\Platform\Support\Collection;
+use Illuminate\Support\Collection;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Exception;
 use Illuminate\Container\Container;

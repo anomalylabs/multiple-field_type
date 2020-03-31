@@ -9,7 +9,7 @@ use Anomaly\MultipleFieldType\Table\SelectedTableBuilder;
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
 use Anomaly\Streams\Platform\Http\Controller\AdminController;
 use Anomaly\Streams\Platform\Model\EloquentModel;
-use Anomaly\Streams\Platform\Support\Collection;
+use Illuminate\Support\Collection;
 
 /**
  * Class LookupController
