@@ -28,8 +28,8 @@ class MultipleFieldTypeQuery extends FieldTypeQuery
         $stream = $filter->getStream();
 
         $query->leftJoin(
-            $stream->getEntryTableName() . '_' . $filter->getField() . ' AS filter_' . $filter->getField(),
-            $stream->getEntryTableName() . '.id',
+            $stream->model->getTable() . '_' . $filter->getField() . ' AS filter_' . $filter->getField(),
+            $stream->model->getTable() . '.id',
             '=',
             'filter_' . $filter->getField() . '.entry_id'
         )->where('filter_' . $filter->getField() . '.related_id', $filter->getValue());
