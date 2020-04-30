@@ -77,7 +77,7 @@ class MultipleFieldType extends FieldType
      *
      * @var array
      */
-    protected $config = [
+    public $config = [
         'mode' => 'tags',
     ];
 
