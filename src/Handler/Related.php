@@ -35,7 +35,7 @@ class Related
              */
             if (!$parsable) {
                 $fieldType->setOptions(
-                    array_combine(
+                    $options = array_combine(
                         $results->map(
                             function ($item) use ($fieldType, $model) {
                                 return data_get($item, $fieldType->config('key_name', $model->getKeyName()));

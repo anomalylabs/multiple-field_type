@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType\Command;
+<?php
+
+namespace Anomaly\MultipleFieldType\Command;
 
 use Anomaly\MultipleFieldType\Handler\Related;
 use Anomaly\MultipleFieldType\MultipleFieldType;
@@ -39,6 +41,7 @@ class BuildOptions
     public function handle(Container $container)
     {
         if ($options = $this->fieldType->config('options')) {
+
             $this->fieldType->setOptions($options);
 
             return;

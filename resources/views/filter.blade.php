@@ -3,10 +3,10 @@
     'value' => null,
 ])) !!}>
 
-    <option value="" disabled {{ $fieldType->getValue() ? null : 'selected' }}>{{ $fieldType->placeholder }}</option>
+    <option value="" disabled {{ $fieldType->value ? null : 'selected' }}>{{ $fieldType->placeholder }}</option>
 
     @foreach ($fieldType->getOptions() as $value => $option)
-        <option value="{{ $value }}" {{ $value == $fieldType->getValue() ? 'selected' : null }}>{{ $option }}</option>
+        <option value="{{ $value }}" {{ $value == $fieldType->value ? 'selected' : null }}>{{ $option }}</option>
     @endforeach
 
 </select>
