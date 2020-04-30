@@ -1,4 +1,6 @@
-<?php namespace Anomaly\MultipleFieldType;
+<?php
+
+namespace Anomaly\MultipleFieldType;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -25,19 +27,19 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
      */
     public function addColumn(Blueprint $table, FieldInterface $field)
     {
-        $table = $table->getTable() . '_' . $field->getSlug();
+        $table = $table->getTable() . '_' . $field->slug;
 
         /**
          * @var $schema Builder
          */
         $schema = Schema::connection(config('database.default'));
-        
+
         $schema->dropIfExists($table);
 
         $schema->create(
             $table,
             function (Blueprint $table) use ($field) {
-                
+
                 $table->increments('id');
                 $table->integer('entry_id');
                 $table->integer('related_id');
@@ -45,7 +47,7 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
 
                 $table->unique(
                     ['entry_id', 'related_id'],
-                    md5($table->getTable() . '_' . $field->getSlug() . '-unique-relations')
+                    md5($table->getTable() . '_' . $field->slug . '-unique-relations')
                 );
             }
         );
@@ -60,8 +62,8 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
     public function renameColumn(Blueprint $table, FieldType $from)
     {
         $schema->rename(
-            $table->getTable() . '_' . $from->getField(),
-            $table->getTable() . '_' . $this->fieldType->getField()
+            $table->getTable() . '_' . $from->field,
+            $table->getTable() . '_' . $this->fieldType->field
         );
     }
 
@@ -73,7 +75,7 @@ class MultipleFieldTypeSchema extends FieldTypeSchema
     public function dropColumn(Blueprint $table)
     {
         $schema->dropIfExists(
-            $table->getTable() . '_' . $this->fieldType->getField()
+            $table->getTable() . '_' . $this->fieldType->field
         );
     }
 }
