@@ -64,11 +64,11 @@ class MultipleFieldType extends FieldType
     ];
 
     /**
-     * The field type rules.
+     * Validation rules.
      *
      * @var array
      */
-    protected $rules = [
+    public $rules = [
         'array',
     ];
 
