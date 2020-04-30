@@ -361,7 +361,7 @@ class MultipleFieldType extends FieldType
                 [
                     'data-key' => $this->key(),
                     'name' => $this->getInputName() . '[]',
-                    'data-placeholder' => $this->getPlaceholder(),
+                    'data-placeholder' => $this->placeholder,
                 ],
                 $attributes
             )
