@@ -312,7 +312,7 @@ class MultipleFieldType extends FieldType
      */
     public function getClass()
     {
-        if ($class = parent::getClass()) {
+        if ($class = parent::attr('class')) {
             return $class;
         }
 
