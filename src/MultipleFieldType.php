@@ -2,16 +2,15 @@
 
 namespace Anomaly\MultipleFieldType;
 
-use Anomaly\MultipleFieldType\Command\BuildOptions;
-use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
-use Anomaly\Streams\Platform\Entry\EntryCollection;
-use Anomaly\Streams\Platform\Model\EloquentModel;
-use Anomaly\Streams\Platform\Stream\Command\GetStream;
 use Illuminate\Support\Collection;
-use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
-use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
+use Anomaly\Streams\Platform\Model\EloquentModel;
+use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Anomaly\Streams\Platform\Entry\EntryCollection;
+use Anomaly\MultipleFieldType\Command\BuildOptions;
+use Anomaly\Streams\Platform\Stream\Command\GetStream;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**

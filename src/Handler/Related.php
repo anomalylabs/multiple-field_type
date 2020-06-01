@@ -2,6 +2,7 @@
 
 namespace Anomaly\MultipleFieldType\Handler;
 
+use Illuminate\Support\Str;
 use Anomaly\MultipleFieldType\MultipleFieldType;
 
 /**
@@ -26,7 +27,7 @@ class Related
         $query   = $model->newQuery();
         $results = $query->get();
 
-        $parsable = str_contains($fieldType->config('title_name', $model->stream()->title_column), ['{', '::']);
+        $parsable = Str::contains($fieldType->config('title_name', $model->stream()->title_column), ['{', '::']);
 
         try {
 
