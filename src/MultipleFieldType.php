@@ -2,13 +2,14 @@
 
 namespace Anomaly\MultipleFieldType;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
-use Anomaly\Streams\Platform\Entry\EntryCollection;
 use Anomaly\MultipleFieldType\Command\BuildOptions;
+use Anomaly\Streams\Platform\Entry\EntryCollection;
 use Anomaly\Streams\Platform\Stream\Command\GetStream;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -139,11 +140,11 @@ class MultipleFieldType extends FieldType
      */
     public function rules(array $rules = [])
     {
-        if ($min = array_get($this->getConfig(), 'min')) {
+        if ($min = Arr::get($this->getConfig(), 'min')) {
             $rules[] = 'min:' . $min;
         }
 
-        if ($max = array_get($this->getConfig(), 'max')) {
+        if ($max = Arr::get($this->getConfig(), 'max')) {
             $rules[] = 'max:' . $max;
         }
 

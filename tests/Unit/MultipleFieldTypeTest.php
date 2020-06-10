@@ -1,7 +1,7 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Contracts\View\View;
 use Anomaly\MultipleFieldType\MultipleFieldType;
 
 class MultipleFieldTypeTest extends TestCase
@@ -22,6 +22,6 @@ class MultipleFieldTypeTest extends TestCase
 
         $attributes = $fieldType->attributes();
 
-        $this->assertTrue(array_get($attributes, 'name') === $fieldType->getInputName() . '[]');
+        $this->assertTrue(Arr::get($attributes, 'name') === $fieldType->getInputName() . '[]');
     }
 }

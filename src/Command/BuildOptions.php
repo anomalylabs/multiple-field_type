@@ -2,6 +2,7 @@
 
 namespace Anomaly\MultipleFieldType\Command;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Anomaly\MultipleFieldType\Handler\Related;
@@ -53,7 +54,7 @@ class BuildOptions
         $handler = Related::class;
 
         if (!class_exists($handler) && !Str::contains($handler, '@')) {
-            $handler = array_get($this->fieldType->getHandlers(), $handler);
+            $handler = Arr::get($this->fieldType->getHandlers(), $handler);
         }
 
         if (is_string($handler) && !Str::contains($handler, '@')) {
