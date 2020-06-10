@@ -1,7 +1,8 @@
 <?php
 
-use Anomaly\MultipleFieldType\MultipleFieldType;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
+use Anomaly\MultipleFieldType\MultipleFieldType;
 
 class MultipleFieldTypeTest extends TestCase
 {
@@ -11,7 +12,7 @@ class MultipleFieldTypeTest extends TestCase
         $fieldType = app(MultipleFieldType::class)
             ->setField('multiple');
 
-        $this->assertTrue(str_contains($fieldType->class('foo bar'), 'input'));
+        $this->assertTrue(Str::contains($fieldType->class('foo bar'), 'input'));
     }
 
     public function testAttributes()
