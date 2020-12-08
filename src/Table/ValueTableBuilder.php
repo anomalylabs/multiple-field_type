@@ -78,7 +78,7 @@ class ValueTableBuilder extends TableBuilder
         $related = $fieldType->getRelatedModel();
         $entry   = $fieldType->getEntry();
 
-        if ($entry->getId() && $related && !$uploaded) {
+        if ($entry->getId() && $related && $uploaded) {
             $query->join($table, $table . '.related_id', '=', $related->getTableName() . '.id');
             $query->where($table . '.entry_id', $entry->getId());
             $query->orderBy($table . '.sort_order', 'ASC');
