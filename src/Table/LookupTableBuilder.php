@@ -1,5 +1,6 @@
 <?php namespace Anomaly\MultipleFieldType\Table;
 
+use Anomaly\MultipleFieldType\MultipleFieldType;
 use Anomaly\Streams\Platform\Support\Collection;
 use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
 
@@ -19,6 +20,13 @@ class LookupTableBuilder extends TableBuilder
      * @var null|Collection
      */
     protected $config = null;
+
+    /**
+     * The field type.
+     *
+     * @var null|MultipleFieldType
+     */
+    protected $fieldType = null;
 
     /**
      * The ajax flag.
@@ -96,6 +104,29 @@ class LookupTableBuilder extends TableBuilder
     public function setConfig(Collection $config)
     {
         $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * Get the field type.
+     *
+     * @return MultipleFieldType|null
+     */
+    public function getFieldType()
+    {
+        return $this->fieldType;
+    }
+
+    /**
+     * Set the field type.
+     *
+     * @param  MultipleFieldType $fieldType
+     * @return $this
+     */
+    public function setFieldType(MultipleFieldType $fieldType)
+    {
+        $this->fieldType = $fieldType;
 
         return $this;
     }

@@ -37,6 +37,7 @@ class LookupController extends AdminController
         $config = $this->dispatch(new GetConfiguration($key));
 
         $related = $container->make($config->get('related'));
+        $stream = app($config->get('entry'));
 
         if ($table = $config->get('lookup_table')) {
             $table = $container->make($table);
@@ -46,6 +47,7 @@ class LookupController extends AdminController
 
         /* @var LookupTableBuilder $table */
         $table->setConfig($config)
+            ->setFieldType($stream->getFieldType($config->get('field')))
             ->setModel($related);
 
         return $table->render();
