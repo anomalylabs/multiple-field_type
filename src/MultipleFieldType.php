@@ -223,7 +223,7 @@ class MultipleFieldType extends FieldType
     public function getOptions()
     {
         if ($this->options === null) {
-            $this->dispatch(new BuildOptions($this));
+            $this->dispatchSync(new BuildOptions($this));
         }
 
         return $this->options;
@@ -274,7 +274,7 @@ class MultipleFieldType extends FieldType
         if (strpos($model, '.')) {
 
             /* @var StreamInterface $stream */
-            $stream = $this->dispatch(new GetStream($model));
+            $stream = $this->dispatchSync(new GetStream($model));
 
             return $stream->getEntryModel();
         }

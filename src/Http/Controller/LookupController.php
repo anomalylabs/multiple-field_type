@@ -34,7 +34,7 @@ class LookupController extends AdminController
     public function index(Container $container, $key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = $this->dispatchSync(new GetConfiguration($key));
 
         $related = $container->make($config->get('related'));
         $stream = app($config->get('entry'));
@@ -61,7 +61,7 @@ class LookupController extends AdminController
     public function json(Container $container, MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = $this->dispatchSync(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
 
@@ -92,7 +92,7 @@ class LookupController extends AdminController
     public function selected(Container $container, MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
-        $config = $this->dispatch(new GetConfiguration($key));
+        $config = $this->dispatchSync(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
         $fieldType->setField($config->get('field'));
