@@ -12,7 +12,6 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Crypt;
 
 /**
@@ -24,9 +23,6 @@ use Illuminate\Support\Facades\Crypt;
  */
 class MultipleFieldType extends FieldType
 {
-
-    use DispatchesJobs;
-
     /**
      * No database column.
      *
@@ -223,7 +219,7 @@ class MultipleFieldType extends FieldType
     public function getOptions()
     {
         if ($this->options === null) {
-            $this->dispatchSync(new BuildOptions($this));
+            dispatch_sync(new BuildOptions($this));
         }
 
         return $this->options;
@@ -274,7 +270,7 @@ class MultipleFieldType extends FieldType
         if (strpos($model, '.')) {
 
             /* @var StreamInterface $stream */
-            $stream = $this->dispatchSync(new GetStream($model));
+            $stream = dispatch_sync(new GetStream($model));
 
             return $stream->getEntryModel();
         }
