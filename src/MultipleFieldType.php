@@ -152,8 +152,10 @@ class MultipleFieldType extends FieldType
         return Crypt::encrypt(array_merge(
                 $this->getConfig(),
                 [
-                    'field' => $this->getField(),
-                    'entry' => get_class($this->getEntry()),
+                    'field'   => $this->getField(),
+                    'entry'   => get_class($this->getEntry()),
+                    'user'    => auth()->id(),
+                    'expires' => time() + 60 * 60 * 24,
                 ]
             ));
     }

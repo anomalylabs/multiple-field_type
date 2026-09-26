@@ -2,6 +2,7 @@
 
 use Anomaly\Streams\Platform\Support\Collection;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 /**
@@ -39,8 +40,23 @@ class GetConfiguration
      */
     public function handle(Repository $cache)
     {
+        try {
+            $config = Crypt::decrypt($this->key);
+        } catch (DecryptException $exception) {
+            abort(404);
+        }
+
+        if (
+            !is_array($config)
+            || !isset($config['user'], $config['expires'])
+            || (int)$config['user'] !== (int)auth()->id()
+            || (int)$config['expires'] < time()
+        ) {
+            abort(404);
+        }
+
         return new Collection(
-            array_merge(Crypt::decrypt($this->key), ['key' => $this->key])
+            array_merge($config, ['key' => $this->key])
         );
     }
 }
