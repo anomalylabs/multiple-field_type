@@ -17,7 +17,7 @@
                                 {{ key in field_type.config.checked ? 'checked' }}
                                 {{ key in field_type.ids ? 'checked' }}>
 
-                        {{ trans(title)|raw }}
+                        {{ trans(title) }}
                     </label>
                 {% endfor %}
             </p>
@@ -32,7 +32,7 @@
                         {{ key in field_type.config.checked ? 'checked' }}
                         {{ key in field_type.ids ? 'checked' }}>
 
-                {{ trans(title)|raw }}
+                {{ trans(title) }}
             </label>
         {% endif %}
 
