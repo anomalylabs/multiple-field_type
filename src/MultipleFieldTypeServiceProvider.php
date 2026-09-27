@@ -34,9 +34,18 @@ class MultipleFieldTypeServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $routes = [
-        'streams/multiple-field_type/json/{key}'     => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@json',
-        'streams/multiple-field_type/index/{key}'    => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@index',
-        'streams/multiple-field_type/selected/{key}' => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@selected',
+        'streams/multiple-field_type/json/{key}'     => [
+            'verb' => 'get',
+            'uses' => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@json',
+        ],
+        'streams/multiple-field_type/index/{key}'    => [
+            'verb' => 'get',
+            'uses' => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@index',
+        ],
+        'streams/multiple-field_type/selected/{key}' => [
+            'verb' => 'get',
+            'uses' => 'Anomaly\MultipleFieldType\Http\Controller\LookupController@selected',
+        ],
     ];
 
     /**

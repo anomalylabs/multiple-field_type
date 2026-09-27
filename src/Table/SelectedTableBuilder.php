@@ -77,7 +77,7 @@ class SelectedTableBuilder extends TableBuilder
          */
         $related = $fieldType->getRelatedModel();
 
-        $query->whereIn($related->getTableName() . '.id', $uploaded ?: 0);
+        $query->whereIn($related->getTableName() . '.id', $uploaded ?: [0]);
     }
 
     /**

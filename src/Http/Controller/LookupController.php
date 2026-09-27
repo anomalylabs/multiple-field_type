@@ -109,8 +109,14 @@ class LookupController extends AdminController
             $table = $related->newMultipleFieldTypeSelectedTableBuilder();
         }
 
+        $uploaded = $this->request->get('uploaded', []);
+
+        if (is_string($uploaded)) {
+            $uploaded = explode(',', $uploaded);
+        }
+
         /* @var SelectedTableBuilder $table */
-        $table->setSelected(array_filter(explode(',', $this->request->get('uploaded'))))
+        $table->setSelected(array_filter(array_map('intval', (array) $uploaded)))
             ->setModel($related)
             ->setFieldType($fieldType)
             ->setConfig($config)

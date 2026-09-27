@@ -150,7 +150,7 @@ class MultipleFieldType extends FieldType
      */
     public function key()
     {
-        return Crypt::encrypt(array_merge(
+        return Crypt::encrypt(json_encode(array_merge(
                 $this->getConfig(),
                 [
                     'field'   => $this->getField(),
@@ -158,7 +158,7 @@ class MultipleFieldType extends FieldType
                     'user'    => auth()->id(),
                     'expires' => time() + 60 * 60 * 24,
                 ]
-            ));
+            )), false);
     }
 
     /**
