@@ -27,16 +27,27 @@ class Related
         $query   = $model->newQuery();
         $results = $query->get();
 
+        $titleName = $fieldType->config('title_name', $model->getTitleName()) ?: $model->getTitleName();
+        $keyName   = $fieldType->config('key_name', $model->getKeyName()) ?: $model->getKeyName();
+
+        /**
+         * A hidden attribute must never be used as the
+         * visible option label - fall back to the title.
+         */
+        if (in_array($titleName, $model->getHidden(), true)) {
+            $titleName = $model->getTitleName();
+        }
+
         try {
 
             /**
              * Try and use a non-parsing pattern.
              */
-            if (strpos($fieldType->config('title_name', $model->getTitleName()), '{') === false) {
+            if (strpos($titleName, '{') === false) {
                 $fieldType->setOptions(
                     $results->pluck(
-                        $fieldType->config('title_name', $model->getTitleName()),
-                        $fieldType->config('key_name', $model->getKeyName())
+                        $titleName,
+                        $keyName
                     )->all()
                 );
             }
@@ -44,17 +55,17 @@ class Related
             /**
              * Try and use a parsing pattern.
              */
-            if (strpos($fieldType->config('title_name', $model->getTitleName()), '{') !== false) {
+            if (strpos($titleName, '{') !== false) {
                 $fieldType->setOptions(
                     array_combine(
                         $results->map(
-                            function ($item) use ($fieldType, $model) {
-                                return data_get($item, $fieldType->config('key_name', $model->getKeyName()));
+                            function ($item) use ($keyName) {
+                                return data_get($item, $keyName);
                             }
                         )->all(),
                         $results->map(
-                            function ($item) use ($fieldType, $model, $value) {
-                                return $value->make($fieldType->config('title_name', $model->getTitleName()), $item);
+                            function ($item) use ($titleName, $value) {
+                                return $value->make($titleName, $item);
                             }
                         )->all()
                     )
