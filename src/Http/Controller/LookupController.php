@@ -12,7 +12,7 @@ use Anomaly\Streams\Platform\Http\Controller\AdminController;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Support\Collection;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class LookupController
@@ -27,20 +27,23 @@ class LookupController extends AdminController
     /**
      * Return an index of entries from related stream.
      *
-     * @param  Container                                  $container
+     * @param  MultipleFieldType                          $fieldType
      * @param                                             $key
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Container $container, $key)
+    public function index(MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
         $config = dispatch_sync(new GetConfiguration($key));
 
-        $related = $container->make($config->get('related'));
-        $stream = app($config->get('entry'));
+        $fieldType->mergeConfig($config->all());
+        $fieldType->setField($config->get('field'));
+
+        $related = $fieldType->getRelatedModel();
+        $stream  = $this->entry($config);
 
         if ($table = $config->get('lookup_table')) {
-            $table = $container->make($table);
+            $table = $fieldType->makeTable($table, LookupTableBuilder::class);
         } else {
             $table = $related->newMultipleFieldTypeLookupTableBuilder();
         }
@@ -54,19 +57,19 @@ class LookupController extends AdminController
     }
 
     /**
-     * @param Container         $container
      * @param MultipleFieldType $fieldType
      * @param                   $key
      */
-    public function json(Container $container, MultipleFieldType $fieldType, $key)
+    public function json(MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
         $config = dispatch_sync(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
+        $fieldType->setField($config->get('field'));
 
         /* @var EloquentModel $model */
-        $model = $container->make($config->get('related'));
+        $model = $fieldType->getRelatedModel();
 
         $data = [];
 
@@ -89,31 +92,49 @@ class LookupController extends AdminController
      * @param                       $key
      * @return null|string
      */
-    public function selected(Container $container, MultipleFieldType $fieldType, $key)
+    public function selected(MultipleFieldType $fieldType, $key)
     {
         /* @var Collection $config */
         $config = dispatch_sync(new GetConfiguration($key));
 
         $fieldType->mergeConfig($config->all());
         $fieldType->setField($config->get('field'));
-        $fieldType->setEntry($this->container->make($config->get('entry')));
+        $fieldType->setEntry($this->entry($config));
 
-        $related = $container->make($config->get('related'));
+        $related = $fieldType->getRelatedModel();
 
         if ($table = $config->get('selected_table')) {
-            $table = $container->make($table);
+            $table = $fieldType->makeTable($table, SelectedTableBuilder::class);
         } else {
             $table = $related->newMultipleFieldTypeSelectedTableBuilder();
         }
 
         /* @var SelectedTableBuilder $table */
         $table->setSelected(array_filter(explode(',', $this->request->get('uploaded'))))
-            ->setModel($config->get('related'))
+            ->setModel($related)
             ->setFieldType($fieldType)
             ->setConfig($config)
             ->build()
             ->load();
 
         return $table->getTableContent();
+    }
+
+    /**
+     * Make the configured parent entry.
+     *
+     * @param  Collection $config
+     * @return Model
+     * @throws \Exception
+     */
+    protected function entry(Collection $config)
+    {
+        $entry = $config->get('entry');
+
+        if (!is_string($entry) || !is_subclass_of($entry, Model::class)) {
+            throw new \Exception('The lookup configuration must name an entry model.');
+        }
+
+        return $this->container->make($entry);
     }
 }

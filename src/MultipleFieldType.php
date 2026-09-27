@@ -4,6 +4,7 @@ use Anomaly\MultipleFieldType\Command\BuildOptions;
 use Anomaly\MultipleFieldType\Table\ValueTableBuilder;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Entry\EntryCollection;
+use Anomaly\Streams\Platform\Entry\EntryModel;
 use Anomaly\Streams\Platform\Model\EloquentCollection;
 use Anomaly\Streams\Platform\Model\EloquentModel;
 use Anomaly\Streams\Platform\Stream\Command\GetStream;
@@ -171,7 +172,7 @@ class MultipleFieldType extends FieldType
         $related = $this->getRelatedModel();
 
         if ($table = $this->config('value_table')) {
-            $table = $this->container->make($table);
+            $table = $this->makeTable($table, ValueTableBuilder::class);
         } else {
             $table = $related->newMultipleFieldTypeValueTableBuilder();
         }
@@ -263,21 +264,53 @@ class MultipleFieldType extends FieldType
     /**
      * Get the related model.
      *
-     * @return EloquentModel
+     * @return EntryModel
+     * @throws \Exception
      */
     public function getRelatedModel()
     {
         $model = $this->config('related');
 
-        if (strpos($model, '.')) {
+        if (is_string($model) && strpos($model, '.')) {
 
             /* @var StreamInterface $stream */
-            $stream = dispatch_sync(new GetStream($model));
+            if ($stream = dispatch_sync(new GetStream($model))) {
+                return $stream->getEntryModel();
+            }
+        }
 
-            return $stream->getEntryModel();
+        /*
+         * Check the class before making it. Anything the
+         * container can build would otherwise be constructed
+         * before it could be rejected.
+         */
+        if (!is_string($model) || !is_subclass_of($model, EntryModel::class)) {
+            throw new \Exception(
+                "The [related] configuration of field [{$this->getField()}] must name an entry "
+                . "model or a stream."
+            );
         }
 
         return $this->container->make($model);
+    }
+
+    /**
+     * Make a configured table builder.
+     *
+     * @param  string $table
+     * @param  string $type
+     * @return mixed
+     * @throws \Exception
+     */
+    public function makeTable($table, $type)
+    {
+        if (!is_string($table) || !is_a($table, $type, true)) {
+            throw new \Exception(
+                "The table configured for field [{$this->getField()}] must extend [{$type}]."
+            );
+        }
+
+        return $this->container->make($table);
     }
 
     /**
